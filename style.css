@@ -22,6 +22,7 @@ body {
 h1, h2, h3 { font-family: 'Playfair Display', serif; color: var(--gold-dark); }
 
 /* === LAYOUT UTAMA & BINGKAI === */
+/* === LAYOUT UTAMA & BINGKAI === */
 .container { 
     max-width: 480px; 
     margin: 0 auto; 
@@ -29,12 +30,10 @@ h1, h2, h3 { font-family: 'Playfair Display', serif; color: var(--gold-dark); }
     background-color: var(--bg-main);
     position: relative;
     
-    border-left: 4px solid var(--navy-dark);
-    border-right: 4px solid var(--navy-dark);
-    box-shadow: 
-        inset 3px 0 0 var(--gold), 
-        inset -3px 0 0 var(--gold),
-        0 0 30px rgba(0,0,0,0.15); 
+    /* Bingkai luar diubah jadi super tipis dan elegan, bukan garis tebal seperti PPT */
+    border-left: 1px solid rgba(212, 175, 55, 0.3);
+    border-right: 1px solid rgba(212, 175, 55, 0.3);
+    box-shadow: 0 0 40px rgba(7, 16, 30, 0.08); 
 }
 
 /* Pilar Vertikal Transparan di Tengah */
@@ -42,53 +41,155 @@ h1, h2, h3 { font-family: 'Playfair Display', serif; color: var(--gold-dark); }
     content: ""; position: absolute;
     top: 0; bottom: 0; left: 50%;
     transform: translateX(-50%);
-    width: 2px; background-color: rgba(7, 16, 30, 0.05); z-index: 0;
+    width: 1px; background-color: rgba(7, 16, 30, 0.04); z-index: 0;
 }
 
 section { padding: 40px 20px; position: relative; z-index: 2; }
 
-/* === HERO SECTION (Full Navy Gelap) === */
+/* === HERO SECTION === */
 .hero { 
     min-height: 85vh; 
     display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; 
     background: radial-gradient(circle at top center, var(--navy-light) 0%, var(--navy-dark) 100%);
-    border-bottom: 4px solid var(--gold);
+    border-bottom: 2px solid rgba(212, 175, 55, 0.5); /* Dibuat lebih tipis */
     color: #ffffff;
 }
 
 /* === DESAIN & ANIMASI LOGO BEBAS BINGKAI === */
+/* === DESAIN & ANIMASI LOGO 3D GLOWING === */
+/* === DESAIN LOGO 3D & EFEK KLING === */
 .logo-container {
     margin-bottom: 25px;
     display: flex;
     justify-content: center;
-    perspective: 1000px; /* Memberikan ruang untuk efek 3D */
+    perspective: 1000px;
+    position: relative;
+    /* overflow: hidden dihapus agar bayangan 3D bebas bergerak */
 }
 
 .hero-image-logo {
-    width: 160px; /* Ukuran bisa disesuaikan */
+    width: 200px; 
     height: auto;
-    opacity: 0;
-    /* Panggilan Animasi: Muncul elegan (Cinematic Reveal) lalu Melayang 3D */
-    animation: 
-        cinematicReveal 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards, 
-        float3D 4s ease-in-out infinite 1.2s; 
+    background: transparent; /* Mematikan semua warna latar kotak */
+    
+    /* INI KUNCINYA: drop-shadow akan mengikuti lekuk bentuk logo, BUKAN kotak */
+    filter: drop-shadow(0 10px 15px rgba(212, 175, 55, 0.2)); 
+    
+    transition: transform 0.4s ease-out, filter 0.4s ease-out;
+    z-index: 2;
 }
 
-/* Animasi Muncul: Dari buram dan bawah, membesar menjadi fokus */
-@keyframes cinematicReveal {
-    0% { opacity: 0; transform: scale(0.6) translateY(40px); filter: blur(10px); }
-    100% { opacity: 1; transform: scale(1) translateY(0); filter: blur(0); }
+/* Membuat Sapuan Cahaya Kling */
+.logo-container::after {
+    content: '';
+    position: absolute;
+    top: -20%; left: -150%;
+    width: 20%; height: 150%;
+    background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.8), transparent);
+    transform: skewX(-25deg);
+    z-index: 10;
+    pointer-events: none;
+    transition: left 0.6s ease;
 }
 
+/* Pemicu Animasi saat di Laptop (Hover) & HP (Class tilt-active dari JS) */
+// --- EFEK 3D LOGO: Mengikuti Mouse (Laptop) & Gyroscope (HP) ---
+const logoContainer = document.querySelector('.logo-container');
+const logoImg = document.querySelector('.hero-image-logo');
 
+if (logoContainer && logoImg) {
+    // 1. KONTROL UNTUK LAPTOP (Mengikuti Gerakan Mouse)
+    logoContainer.addEventListener('mousemove', (e) => {
+        // Matikan transisi agar pergerakan mouse responsif tanpa delay
+        logoImg.style.transition = 'none';
+        
+        const rect = logoContainer.getBoundingClientRect();
+        
+        // Cari koordinat kursor di dalam area logo
+        const x = e.clientX - rect.left; 
+        const y = e.clientY - rect.top;  
+        
+        // Cari titik tengah logo
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+        
+        // Hitung derajat rotasi 3D (Maksimal miring 20 derajat)
+        const rotateX = ((y - centerY) / centerY) * -20; 
+        const rotateY = ((x - centerX) / centerX) * 20;
+        
+        // Terapkan efek 3D dan bayangan emas yang bergeser mengikuti arah putaran
+        logoImg.style.transform = `perspective(1000px) scale(1.1) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+        logoImg.style.filter = `drop-shadow(${rotateY}px ${-rotateX}px 25px rgba(212, 175, 55, 0.8)) brightness(1.15)`;
+    });
 
-/* Teks di dalam Hero Section */
+    // Kembalikan logo ke posisi semula saat mouse pergi
+    logoContainer.addEventListener('mouseleave', () => {
+        logoImg.style.transition = 'transform 0.6s cubic-bezier(0.25, 1, 0.5, 1), filter 0.6s ease';
+        logoImg.style.transform = `perspective(1000px) scale(1) rotateX(0deg) rotateY(0deg)`;
+        logoImg.style.filter = `drop-shadow(0 10px 15px rgba(212, 175, 55, 0.2))`;
+        
+        // Tambahkan efek kilauan "Kling!" saat mouse dilepas
+        logoContainer.classList.add('kling-active');
+        setTimeout(() => { logoContainer.classList.remove('kling-active'); }, 600);
+    });
+
+    // 2. KONTROL UNTUK HP (Sensor Kemiringan / Gyroscope)
+    window.addEventListener("deviceorientation", (event) => {
+        let beta = event.beta;   // Kemiringan depan/belakang
+        let gamma = event.gamma; // Kemiringan kiri/kanan
+        
+        // Jika tidak ada data gyroscope (misal di laptop), hentikan
+        if (beta === null || gamma === null) return;
+
+        // Batasi sudut agar logo tidak jungkir balik
+        if (beta > 40) beta = 40; if (beta < -40) beta = -40;
+        if (gamma > 40) gamma = 40; if (gamma < -40) gamma = -40;
+
+        // Hitung pergerakan 3D (dikalikan angka desimal agar lebih halus)
+        const rotateX = beta * 0.4; 
+        const rotateY = gamma * 0.4;
+
+        // Memicu kilauan cahaya "Kling!" jika HP digoyang cukup tajam
+        if (Math.abs(gamma) > 15 || Math.abs(beta) > 15) {
+            logoContainer.classList.add('kling-active');
+        } else {
+            setTimeout(() => { logoContainer.classList.remove('kling-active'); }, 500);
+        }
+
+        // Terapkan efek 3D-nya di layar HP
+        logoImg.style.transition = 'transform 0.1s ease-out, filter 0.1s ease-out';
+        logoImg.style.transform = `perspective(1000px) scale(1.05) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+        logoImg.style.filter = `drop-shadow(${rotateY}px ${-rotateX}px 20px rgba(212, 175, 55, 0.7)) brightness(1.1)`;
+    });
+}
 .hero h1 { color: var(--gold); font-size: 2.2rem; margin-bottom: 8px; letter-spacing: 1px; }
-.hero .slogan { font-size: 0.95rem; color: #F3E5AB; margin-bottom: 5px; font-weight: 700;}
-.hero .keterangan { font-size: 0.85rem; color: #cccccc; }
-.scroll-indicator { font-size: 1.5rem; color: var(--gold); margin-top: 50px; animation: pulse-updown 2s infinite; }
+/* Semboyan Elegan dengan Garis Apit */
+.hero .slogan { 
+    font-family: 'Playfair Display', serif; 
+    font-size: 1.1rem; 
+    color: var(--gold); 
+    margin-bottom: 10px; 
+    font-style: italic;
+    letter-spacing: 1.5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px; /* Jarak antara garis dan teks */
+}
 
-@keyframes pulse-updown { 0% { transform: translateY(0); } 50% { transform: translateY(10px); } 100% { transform: translateY(0); } }
+/* Garis emas setipis rambut di kiri dan kanan semboyan */
+.hero .slogan::before,
+.hero .slogan::after {
+    content: '';
+    display: block;
+    width: 50px;
+    height: 1px;
+    background: linear-gradient(to right, transparent, rgba(212, 175, 55, 0.8), transparent);
+}
+.hero .keterangan { font-size: 0.85rem; color: #cccccc; }
+.scroll-indicator { font-size: 1.5rem; color: var(--gold); margin-top: 50px; animation: pulse-updown 2s infinite; opacity: 0.7; }
+
+@keyframes pulse-updown { 0% { transform: translateY(0); } 50% { transform: translateY(8px); } 100% { transform: translateY(0); } }
 
 /* === KARTU & KONTEN === */
 .section-title { 
@@ -102,76 +203,151 @@ section { padding: 40px 20px; position: relative; z-index: 2; }
     position: relative; left: 50%; transform: translateX(-50%);
 }
 
+/* Desain Kartu yang Benar-Benar Elegan */
 .card {
-    background: linear-gradient(145deg, #ffffff, #fcfdfd); 
+    background: #ffffff;
     border: 1px solid rgba(7, 16, 30, 0.04); 
-    border-left: 4px solid var(--gold); 
-    border-radius: 16px; 
+    /* Mengganti blok tebal kiri dengan aksen garis tipis elegan di atas */
+    border-top: 3px solid var(--gold); 
+    border-radius: 12px; 
     padding: 30px 20px; 
     margin-bottom: 25px;
-    box-shadow: 0 10px 30px rgba(7, 16, 30, 0.04), 0 1px 3px rgba(7, 16, 30, 0.02); 
-    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1); 
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03); 
+    position: relative;
+    overflow: hidden; 
+    /* Animasi pergerakan yang sangat mulus (Apple/Premium style ease) */
+    transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1); 
+    z-index: 2;
 }
-.card:active { 
-    transform: translateY(-3px); 
-    box-shadow: 0 5px 15px rgba(7, 16, 30, 0.08); 
+/* Efek Kilauan (Shine) Dibuat Lebih Halus */
+.card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 40%; height: 100%;
+    background: linear-gradient(to right, transparent, rgba(255,255,255,0.6), transparent);
+    transform: skewX(-20deg);
+    z-index: 1;
+    pointer-events: none;
+}
+
+/* Hover (Laptop) & Sentuhan (HP) */
+.card:hover, .card:active { 
+    transform: translateY(-4px); 
+    box-shadow: 0 12px 25px rgba(7, 16, 30, 0.06), 0 8px 20px rgba(212, 175, 55, 0.08); 
+}
+
+/* Transisi saat disorot kursor atau disentuh jari */
+.card:hover::before, .card:active::before {
+    left: 200%; 
+    transition: left 0.7s ease;
+}
+
+/* SOLUSI UNTUK HP: Kilauan melintas otomatis 1x saat kartu muncul (dibaca) di layar */
+.reveal.active .card::before {
+    animation: autoShine 1.2s cubic-bezier(0.25, 1, 0.5, 1) 0.5s forwards;
+}
+
+/* Kunci Animasi Kilauan Otomatis */
+@keyframes autoShine {
+    0% { left: -100%; }
+    100% { left: 200%; }
+}
+
+.card:hover::before, .card:active::before {
+    left: 200%; 
 }
 
 .card .icon { 
-    font-size: 2.2rem; 
+    font-size: 2rem; 
     color: var(--gold); 
     margin-bottom: 15px; 
     display: block; 
     text-align: center; 
-    text-shadow: 0 4px 10px rgba(212, 175, 55, 0.3);
+    transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
-.card h2, .card h3 { font-size: 1.4rem; margin-bottom: 12px; text-align: center;}
-.card p { line-height: 1.7; font-size: 0.9rem; color: var(--text-dark); }
+.card:hover .icon, .card:active .icon {
+    transform: translateY(-3px); /* Ikon hanya sedikit naik, tidak membesar norak */
+}
+
+.card h2, .card h3 { font-size: 1.4rem; margin-bottom: 12px; text-align: center; position: relative; z-index: 2;}
+.card p { 
+    line-height: 1.7; 
+    font-size: 0.9rem; 
+    color: var(--text-dark); 
+    position: relative; 
+    z-index: 2;
+    text-align: justify; /* Membuat teks rata kanan dan kiri */
+
+}
+/* Pengecualian: Khusus kartu dengan class center-text, paragrafnya dikembalikan ke rata tengah */
+.card.center-text p {
+    text-align: center;
+}
+/* Efek Highlight Teks Elegan (Teks Emas + Latar Transparan) */
+.card p b {
+    color: var(--gold-dark);
+    font-weight: 600;
+    background: linear-gradient(120deg, rgba(212, 175, 55, 0.15) 0%, rgba(212, 175, 55, 0.02) 100%);
+    padding: 2px 6px;
+    border-radius: 6px;
+}
 
 /* Khusus Kartu Quote Srawung */
 .quote-card { 
     background: linear-gradient(135deg, var(--navy-dark) 0%, var(--navy-light) 100%); 
-    border: 1px solid rgba(212, 175, 55, 0.15);
-    border-left: 4px solid var(--gold); 
+    border: none;
+    border-top: 3px solid var(--gold); 
     text-align: center;
 }
 .quote-card h3 { color: var(--gold); }
-.quote-card p { color: #f1f1f1; }
+.quote-card p { color: rgba(255, 255, 255, 0.9); }
 .quote-icon { 
-    font-size: 2rem; 
-    color: var(--gold); 
-    margin-bottom: 10px; 
-    text-shadow: 0 4px 10px rgba(212, 175, 55, 0.3);
+    font-size: 1.8rem; 
+    color: rgba(212, 175, 55, 0.7); 
+    margin-bottom: 15px; 
 }
 
 /* === VISI MISI GRID === */
 .grid-2 { display: flex; flex-direction: column; gap: 15px; }
 .misi-list { list-style-type: none; }
 .misi-list li { margin-bottom: 15px; font-size: 0.9rem; color: var(--text-dark); line-height: 1.5; position: relative; padding-left: 25px; }
-.misi-list li::before { content: "\f00c"; font-family: "Font Awesome 6 Free"; font-weight: 900; position: absolute; left: 0; color: var(--gold-dark); }
+.misi-list li::before { content: "\f00c"; font-family: "Font Awesome 6 Free"; font-weight: 900; position: absolute; left: 0; color: var(--gold-dark); transition: transform 0.3s ease;}
 
 /* === TOMBOL MASUKAN === */
 .btn-masukan { 
     display: inline-block; width: 100%; text-align: center; 
     background-color: var(--gold); color: var(--navy-dark); 
-    padding: 14px; border-radius: 25px; text-decoration: none; 
-    font-weight: bold; font-size: 1rem; margin-top: 10px; 
-    box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3); transition: all 0.3s ease; 
+    padding: 14px; border-radius: 30px; text-decoration: none; 
+    font-weight: 600; font-size: 0.95rem; margin-top: 10px; 
+    box-shadow: 0 4px 15px rgba(212, 175, 55, 0.2); transition: all 0.4s ease; 
+    position: relative; z-index: 2;
 }
-.btn-masukan:active { background-color: var(--navy-dark); color: var(--gold); transform: scale(1.02); } 
+.btn-masukan:hover, .btn-masukan:active { 
+    background-color: var(--navy-dark); color: var(--gold); 
+    transform: translateY(-2px); box-shadow: 0 8px 20px rgba(7, 16, 30, 0.15);
+} 
 
-/* === FOOTER (Full Navy Gelap) === */
+/* === FOOTER === */
 footer { 
-    text-align: center; padding: 30px 20px; font-size: 0.8rem; color: #cccccc; 
+    text-align: center; padding: 30px 20px; font-size: 0.8rem; color: #999999; 
     position: relative; z-index: 2; 
     background-color: var(--navy-dark); 
-    border-top: 4px solid var(--gold);
+    border-top: 2px solid rgba(212, 175, 55, 0.3);
 }
 .social-links { margin-bottom: 15px; }
-.social-links a { color: var(--gold); font-size: 1.5rem; margin: 0 10px; text-decoration: none; transition: color 0.3s;}
-.social-links a:active { color: #ffffff; }
+.social-links a { color: var(--gold); font-size: 1.5rem; margin: 0 10px; text-decoration: none; transition: all 0.4s ease;}
+.social-links a:hover { color: #ffffff; transform: translateY(-3px); }
 
-/* === ANIMASI MUNCUL RINGAN === */
-.reveal { opacity: 0; transform: translateY(20px); transition: all 0.6s ease-out; }
-.reveal.active { opacity: 1; transform: translateY(0); }
+/* === ANIMASI MUNCUL SAAT DI-SCROLL (SMOOTH & CINEMATIC) === */
+.reveal { 
+    opacity: 0; 
+    transform: translateY(30px); /* Jarak dari bawah diperpendek agar tidak terkesan melompat */
+    /* Menggunakan transisi smooth tanpa efek membal sama sekali */
+    transition: all 0.9s cubic-bezier(0.25, 1, 0.5, 1); 
+}
+.reveal.active { 
+    opacity: 1; 
+    transform: translateY(0); 
+}
