@@ -1,0 +1,24 @@
+const dataKT = {
+  "organisasi": {
+    "nama": "Trah Yudistira",
+    "slogan": "Aditya Karya Mahatva Yodha",
+    "keterangan": "Karang Taruna RT 05 RW 05 Bandarharjo"
+  },
+  "pesan_solidaritas": {
+    "teks": "\"NEK ORA SRAWUNG RASAH TULANG TULUNG!!! Nek alesan sesok kerjo, kesel, kuliah, ono tugas... La mangsamu kene seng srawung ki pengangguran po pie!!!\""
+  },
+  "tentang": "Trah Yudistira bukan sekadar organisasi, melainkan wadah kebersamaan dan kekeluargaan pemuda-pemudi RT 05 RW 05 Bandarharjo. Kami mencetak pemuda yang cerdas, berkarya, dan berjiwa ksatria untuk lingkungan sekitar.",
+  "arah_gerak": {
+    "visi": "Mewujudkan generasi muda yang mandiri, inovatif, berakhlak mulia, serta memiliki solidaritas tinggi dalam membangun lingkungan yang harmonis.",
+    "misi": [
+      "Mempererat tali persaudaraan antar pemuda-pemudi.",
+      "Menyelenggarakan kegiatan sosial dan olahraga yang positif.",
+      "Menggali dan mengembangkan potensi kreatif remaja.",
+      "Berperan aktif menjaga kerukunan warga Bandarharjo."
+    ]
+  },
+  "kontak": {
+    "link_form": "https://docs.google.com/forms/d/19eWJh8J6Mx9DrGXKEv3ojKmqw8Cv9pscK_eCAIzU0bxt1wlaTw/viewform?hl=id",
+    "tahun_copyright": "2026"
+  }
+};

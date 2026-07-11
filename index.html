@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trah Yudistira - Bandarharjo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+    <!-- Hero Section (Full Navy Gelap) -->
+        <section class="hero reveal active">
+            <div class="logo-container">
+                <!-- Pastikan nama file gambarmu sama persis dengan ini -->
+                <img src="logo.jpg" alt="Logo Trah Yudistira" class="hero-image-logo">
+            </div>
+            
+            <h1 id="org-nama">Memuat...</h1>
+            <p id="org-slogan" class="slogan"></p>
+            <p id="org-ket" class="keterangan"></p>
+            <i class="fas fa-chevron-down scroll-indicator"></i>
+        </section>
+
+        <!-- Pesan Solidaritas (Kartu Navy di tengah web) -->
+        <section class="reveal" style="padding-top: 20px;">
+            <div class="card quote-card">
+                <i class="fas fa-quote-left quote-icon"></i>
+                <h3 style="margin-bottom: 10px;">Slogan Kami</h3>
+                <p id="pesan-teks" style="font-weight: 600; font-style: italic;"></p>
+            </div>
+        </section>
+
+        <!-- Tentang Kami -->
+        <section class="reveal">
+            <div class="card">
+                <i class="fas fa-users icon"></i>
+                <h2>Tentang Kami</h2>
+                <p id="tentang-teks">Memuat informasi...</p>
+            </div>
+        </section>
+
+        <!-- Visi & Misi -->
+        <section class="reveal">
+            <h2 class="section-title">Arah Gerak Kami</h2>
+            <div class="grid-2">
+                <div class="card">
+                    <i class="fas fa-eye icon"></i>
+                    <h3>Visi</h3>
+                    <p id="visi-teks" class="text-center"></p>
+                </div>
+                <div class="card">
+                    <i class="fas fa-bullseye icon"></i>
+                    <h3>Misi</h3>
+                    <ul id="misi-list" class="misi-list"></ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Kotak Masukan -->
+        <section class="reveal">
+            <h2 class="section-title">Kotak Masukan & Saran</h2>
+            <p class="subtitle">Bantu kami menjadi lebih baik untuk kemajuan RT 05 RW 05.</p>
+            <div class="card center-text">
+                <i class="fas fa-envelope-open-text icon" style="font-size: 3rem;"></i>
+                <h3>Punya Ide untuk Kami?</h3>
+                <p>Kritik, saran, maupun ide kegiatan sangat berarti. Sampaikan melalui form di bawah ini.</p>
+                <a href="#" id="link-masukan" target="_blank" class="btn-masukan">
+                    <i class="fas fa-paper-plane"></i> Kirim Masukan
+                </a>
+            </div>
+        </section>
+    </div>
+
+<!-- Footer (Full Navy Gelap) -->
+    <footer>
+        <div class="social-links">
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-whatsapp"></i></a>
+        </div>
+        <p>&copy; <span id="tahun-copyright"></span> <span id="footer-nama"></span>.</p>
+    </footer>
+
+    <!-- Panggil file data.js dulu, baru script.js -->
+    <script src="data.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
