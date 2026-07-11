@@ -10,9 +10,13 @@
 </head>
 <body>
     <div class="container">
-        <!-- Hero Section (Sekarang Full Navy) -->
+    <!-- Hero Section (Full Navy Gelap) -->
         <section class="hero reveal active">
-            <i class="fas fa-shield-halved hero-logo"></i>
+            <div class="logo-container">
+                <!-- Pastikan nama file gambarmu sama persis dengan ini -->
+                <img src="logo.jpg" alt="Logo Trah Yudistira" class="hero-image-logo">
+            </div>
+            
             <h1 id="org-nama">Memuat...</h1>
             <p id="org-slogan" class="slogan"></p>
             <p id="org-ket" class="keterangan"></p>
@@ -23,7 +27,7 @@
         <section class="reveal" style="padding-top: 20px;">
             <div class="card quote-card">
                 <i class="fas fa-quote-left quote-icon"></i>
-                <h3 style="margin-bottom: 10px;">Pesan Pemuda</h3>
+                <h3 style="margin-bottom: 10px;">Slogan Kami</h3>
                 <p id="pesan-teks" style="font-weight: 600; font-style: italic;"></p>
             </div>
         </section>
@@ -69,7 +73,7 @@
         </section>
     </div>
 
-    <!-- Footer (Sekarang Full Navy) -->
+<!-- Footer (Full Navy Gelap) -->
     <footer>
         <div class="social-links">
             <a href="#"><i class="fab fa-instagram"></i></a>
@@ -78,6 +82,8 @@
         <p>&copy; <span id="tahun-copyright"></span> <span id="footer-nama"></span>.</p>
     </footer>
 
+    <!-- Panggil file data.js dulu, baru script.js -->
+    <script src="data.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
