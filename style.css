@@ -5,7 +5,7 @@
     --navy-dark: #07101E; 
     --navy-light: #112240; 
     --gold: #D4AF37; 
-    --gold-dark: #B5952F; /* Emas yang sedikit lebih pekat agar terbaca di background putih */
+    --gold-dark: #B5952F; 
     --text-dark: #333333; 
     --text-muted: #666666; 
 }
@@ -14,12 +14,11 @@
 
 body {
     font-family: 'Poppins', sans-serif;
-    background-color: #E2E6ED; /* Background luar agak gelap agar bingkai web menonjol */
+    background-color: #E2E6ED; 
     color: var(--text-dark);
     overflow-x: hidden;
 }
 
-/* Judul dikembalikan jadi Emas */
 h1, h2, h3 { font-family: 'Playfair Display', serif; color: var(--gold-dark); }
 
 /* === LAYOUT UTAMA & BINGKAI === */
@@ -30,7 +29,6 @@ h1, h2, h3 { font-family: 'Playfair Display', serif; color: var(--gold-dark); }
     background-color: var(--bg-main);
     position: relative;
     
-    /* Garis Tepi Navy & Emas */
     border-left: 4px solid var(--navy-dark);
     border-right: 4px solid var(--navy-dark);
     box-shadow: 
@@ -50,20 +48,47 @@ h1, h2, h3 { font-family: 'Playfair Display', serif; color: var(--gold-dark); }
 section { padding: 40px 20px; position: relative; z-index: 2; }
 
 /* === HERO SECTION (Full Navy Gelap) === */
-.hero-logo { 
-    font-size: 5.5rem; /* Ukuran sedikit dibesarkan agar kemewahannya lebih menonjol */
-    margin-bottom: 20px; 
-    
-    /* Efek Gradasi Emas Metalik */
-    background: linear-gradient(135deg, #F9F295 0%, #E0AA3E 40%, #E0AA3E 60%, #B88A44 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    
-    /* Efek Cahaya Berpendar (Glow) di belakang logo */
-    filter: drop-shadow(0 8px 15px rgba(224, 170, 62, 0.4)); 
-    
-    animation: pulse-logo 3s infinite; 
+.hero { 
+    min-height: 85vh; 
+    display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; 
+    background: radial-gradient(circle at top center, var(--navy-light) 0%, var(--navy-dark) 100%);
+    border-bottom: 4px solid var(--gold);
+    color: #ffffff;
 }
+
+/* === DESAIN & ANIMASI LOGO BEBAS BINGKAI === */
+.logo-container {
+    margin-bottom: 25px;
+    display: flex;
+    justify-content: center;
+    perspective: 1000px; /* Memberikan ruang untuk efek 3D */
+}
+
+.hero-image-logo {
+    width: 160px; /* Ukuran bisa disesuaikan */
+    height: auto;
+    opacity: 0;
+    /* Panggilan Animasi: Muncul elegan (Cinematic Reveal) lalu Melayang 3D */
+    animation: 
+        cinematicReveal 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards, 
+        float3D 4s ease-in-out infinite 1.2s; 
+}
+
+/* Animasi Muncul: Dari buram dan bawah, membesar menjadi fokus */
+@keyframes cinematicReveal {
+    0% { opacity: 0; transform: scale(0.6) translateY(40px); filter: blur(10px); }
+    100% { opacity: 1; transform: scale(1) translateY(0); filter: blur(0); }
+}
+
+
+
+/* Teks di dalam Hero Section */
+.hero h1 { color: var(--gold); font-size: 2.2rem; margin-bottom: 8px; letter-spacing: 1px; }
+.hero .slogan { font-size: 0.95rem; color: #F3E5AB; margin-bottom: 5px; font-weight: 700;}
+.hero .keterangan { font-size: 0.85rem; color: #cccccc; }
+.scroll-indicator { font-size: 1.5rem; color: var(--gold); margin-top: 50px; animation: pulse-updown 2s infinite; }
+
+@keyframes pulse-updown { 0% { transform: translateY(0); } 50% { transform: translateY(10px); } 100% { transform: translateY(0); } }
 
 /* === KARTU & KONTEN === */
 .section-title { 
@@ -72,33 +97,53 @@ section { padding: 40px 20px; position: relative; z-index: 2; }
     position: relative; left: 50%; transform: translateX(-50%); 
 }
 .subtitle { 
-    text-align: center; font-size: 0.85rem; color: var(--text-muted); margin-bottom: 25px; 
+    text-align: center; font-size: 0.85rem; color: var(--text-muted); margin-bottom: 30px; 
     background-color: var(--bg-main); display: inline-block; padding: 0 10px; 
     position: relative; left: 50%; transform: translateX(-50%);
 }
 
 .card {
-    background-color: var(--card-bg);
-    border-top: 4px solid var(--navy-dark); /* Variasi garis navy di atas kartu */
-    border-radius: 12px; padding: 25px 20px; margin-bottom: 20px;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08); 
-    transition: transform 0.3s ease;
+    background: linear-gradient(145deg, #ffffff, #fcfdfd); 
+    border: 1px solid rgba(7, 16, 30, 0.04); 
+    border-left: 4px solid var(--gold); 
+    border-radius: 16px; 
+    padding: 30px 20px; 
+    margin-bottom: 25px;
+    box-shadow: 0 10px 30px rgba(7, 16, 30, 0.04), 0 1px 3px rgba(7, 16, 30, 0.02); 
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1); 
 }
-.card:active { transform: translateY(-3px); box-shadow: 0 12px 25px rgba(0, 0, 0, 0.12); }
-.card .icon { font-size: 2rem; color: var(--navy-dark); margin-bottom: 15px; display: block; text-align: center; }
-.card h2, .card h3 { font-size: 1.4rem; margin-bottom: 12px; text-align: center;}
-.card p { line-height: 1.6; font-size: 0.9rem; color: var(--text-dark); }
+.card:active { 
+    transform: translateY(-3px); 
+    box-shadow: 0 5px 15px rgba(7, 16, 30, 0.08); 
+}
 
-/* Khusus Kartu Quote Srawung (Full Navy agar tidak membosankan) */
+.card .icon { 
+    font-size: 2.2rem; 
+    color: var(--gold); 
+    margin-bottom: 15px; 
+    display: block; 
+    text-align: center; 
+    text-shadow: 0 4px 10px rgba(212, 175, 55, 0.3);
+}
+
+.card h2, .card h3 { font-size: 1.4rem; margin-bottom: 12px; text-align: center;}
+.card p { line-height: 1.7; font-size: 0.9rem; color: var(--text-dark); }
+
+/* Khusus Kartu Quote Srawung */
 .quote-card { 
     background: linear-gradient(135deg, var(--navy-dark) 0%, var(--navy-light) 100%); 
-    border-top: none;
-    border-bottom: 4px solid var(--gold); 
+    border: 1px solid rgba(212, 175, 55, 0.15);
+    border-left: 4px solid var(--gold); 
     text-align: center;
 }
 .quote-card h3 { color: var(--gold); }
 .quote-card p { color: #f1f1f1; }
-.quote-icon { font-size: 2rem; color: rgba(212, 175, 55, 0.4); margin-bottom: 10px; }
+.quote-icon { 
+    font-size: 2rem; 
+    color: var(--gold); 
+    margin-bottom: 10px; 
+    text-shadow: 0 4px 10px rgba(212, 175, 55, 0.3);
+}
 
 /* === VISI MISI GRID === */
 .grid-2 { display: flex; flex-direction: column; gap: 15px; }
